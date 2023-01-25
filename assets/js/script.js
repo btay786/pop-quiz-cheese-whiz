@@ -1,74 +1,108 @@
 // gee whiz quiz biz
-var questions =[ { question:'What is a boolean?', choices["True or false", "string","index html file"],
-    answer: "True or false"
-},
-{
-    question: "What is a String?",
-    choices: ["a sequence of characters that exists as an object of the class java", "a numerical integer"],
-    answer: "a sequence of characters that exists as an object of the class java"
-}
-
-]:
-var timeLeft = 60; //time in seconds
+var questions = [
+    {
+        question: 'What is a boolean?',
+        choices: ["True or false", "string", "index html file"],
+        answer: "True or false"
+    },
+    {
+        question: "What is a String?",
+        choices: ["a sequence of characters that exists as an object of the class java", "a numerical integer"],
+        answer: "a sequence of characters that exists as an object of the class java"
+    }
+];
+var startBtn = document.getElementById("start-button")
+var timeLeft = 60;
 var currentQuestion = 0;
 var timer;
+var score = 0
 
 function startQuiz() {
-    document.getElementById("start-button").style.display = "none";
+    startBtn.style.display = "none";
     document.getElementById("quiz").style.display = "block";
     startTimer();
     showQuestion();
 }
 
-fucntion startTimer(){
-    timer = setInterval(fucntion(){
-       timeLeft--;
-       document.getElementById("time").innerHTML = timeLeft;
-       if (timeLeft === 0){
-        clearInterval(timer);
-        endQuiz();
-       } 
+function startTimer() {
+    timer = setInterval(function () {
+        timeLeft--
+        document.getElementById("time").innerHTML = timeLeft;
+        if (timeLeft === 0 || currentQuestion === questions.length) {
+            clearInterval(timer);
+            endQuiz();
+        }
     }, 1000);
 }
 
-fucntion showQuestion() {
+function showQuestion() {
+    if (currentQuestion === questions.length) return
     var question = questions[currentQuestion];
-    document.getElementById?("question").innerHTML = question.questio;
+    document.getElementById("question").innerHTML = question.question;
     var choices = document.getElementById("choices");
     choices.innerHTML = "";
-    for(var i=0; i<question.choices.length; i++){
-        var choice = questions.choices[i];
-        choices.innerHTML+="<button onclick='checkAnswer(\"" + choice+ "\")>"+ choice +
-    "</button>";
+    for (var i = 0; i < question.choices.length; i++) {
+        var btn = document.createElement('button')
+        var choice = questions[currentQuestion].choices[i];
+        btn.textContent = choice
+        btn.setAttribute('id', 'choices')
+        choices.append(btn)
+
+        btn.addEventListener('click', function (event) {
+            checkAnswer(event.target.textContent)
+        })
     }
 }
 
-fucntion checkAnswer(answer){
-    if(answer===questions[currentQuestion].answer){
-        currentQuestion++;
-        if (currentQuestion === questions.length){
-            endQuiz();
-        }
-        }else {
-            timeLeft-=10;
-            if(timeLeft<0){
-                timeLeft=0;
-            }
-            document.getElementById("time").innerHTML=timeLeft;
-      }
+function checkAnswer(answer) {
+    console.log(answer)
+    console.log(questions[currentQuestion].answer)
+    if (answer === questions[currentQuestion].answer) {
+        score += 50
+        console.log(score)
+    } else {
+        timeLeft -= 10;
+        console.log(score)
+    }
+    currentQuestion++;
+    showQuestion()
 }
 
-function endQuiz(){
-    clearInterval(timer);
+function endQuiz() {
     document.getElementById("quiz").style.display = "none";
-    document.getElementById("end").style.display = "block";
-    document.getElementById("final-score").innerHTML=timeLeft;
-    document.getElementById("save-score").onclick = function(){
-        var initials = document.getElementById("initials").ariaValueMax;
-        saveScore(initials, timeLeft);
-    };
+    var end = document.getElementById("end")
+    document.getElementById("final-score").innerHTML = "Final Score: " + score;
+    
+    var input = document.createElement('input')
+    input.setAttribute('placeholder', 'Initials')
+
+    var submitBtn = document.createElement('button')
+    submitBtn.textContent = "SUBMIT"
+
+    end.append(input, submitBtn)
+
+    submitBtn.addEventListener('click', function() {
+        saveScore(input.value, score)
+    })
+
 }
 
-function saveScore(initials, score){
-    alert("Score Saved!");
+function saveScore(initials, score) {
+    var userInfo = {
+        initials,
+        score
+    }
+
+    var storage = JSON.parse(localStorage.getItem('quizScores'))
+    if(storage === null) {
+        storage =[]
+    }
+
+    storage.push(userInfo)
+    localStorage.setItem('quizScores', JSON.stringify(storage))
+
+    window.location.href = 'highscores.html'
+
 }
+
+startBtn.addEventListener('click', startQuiz)
