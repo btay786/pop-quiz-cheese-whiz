@@ -19,3 +19,17 @@ WHEN all questions are answered or the timer reaches 0
 THEN the game is over
 WHEN the game is over
 THEN I can save my initials and score
+
+
+#### live site
+ https://btay786.github.io/pop-quiz-cheese-whiz/
+
+ #####  git repo
+
+ https://github.com/btay786/pop-quiz-cheese-whiz
+
+
+ /Users/bryan/Documents/bootcamp/projects/pop-quiz-cheese-whiz/assets/images/screenshotofquiz.png
+
+ 
+
