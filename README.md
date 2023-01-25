@@ -31,5 +31,7 @@ THEN I can save my initials and score
 
  /Users/bryan/Documents/bootcamp/projects/pop-quiz-cheese-whiz/assets/images/screenshotofquiz.png
 
+ ![screenshotofquiz](https://user-images.githubusercontent.com/118776655/214476410-c78756c4-2767-4690-a0e5-cc1bcae39b99.png)
+
  
 
